@@ -93,16 +93,29 @@ typedef struct			s_var
 	long double 		r;
 	long double 		i;
 	char 				*map;
+	int 				*filter;
 	char				loopf;
 	char 				br;
 	char 				*reason;
 	char 				debug;
-	pthread_t			tid[P_THREADS];
+	char 				core_tid[P_THREADS];
 	pthread_rwlock_t	lock_rw[1];
-	pthread_mutex_t		mutex_tid[1];
+	pthread_rwlock_t	render[1];
+	pthread_rwlock_t	core[1];
+	pthread_attr_t		attr[1];
+	pthread_t			tid[P_THREADS];
+	pthread_t 			render_tid[1];
 	pthread_t 			debug_tid[1];
 	t_die				die;
+	struct s_var		*st_var[P_THREADS];
 	struct s_var		*var;
 
 }						t_var;
+
+void					fractalgo(t_var *var, char *av);
+void					*render(void *param);
+void					*debug_funct(t_var *var);
+void					end_pthread(t_var *var);
+int 					mousepressed(int button, int x, int y, void *param);
+int 					loop_hook(void *param);
 #endif
