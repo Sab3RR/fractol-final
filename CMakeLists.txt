@@ -64,4 +64,4 @@ add_executable(fractol main.c libft/ft_memset.c
         libft/ft_lstiter.c
         libft/ft_lstmap.c
         libft/ft_strdup.c
-        libft/ft_lstpushback.c libft/ft_findichar.c libft/ft_strnjoin.c libft/ft_lstfree.c libft/ft_fill_list.c libft/ft_read_list.c libft/ft_swap.c libft/get_next_line.c libft/ft_memdel_arr.c fractol.h init.c render.c debug.c keyhook.c)
+        libft/ft_lstpushback.c libft/ft_findichar.c libft/ft_strnjoin.c libft/ft_lstfree.c libft/ft_fill_list.c libft/ft_read_list.c libft/ft_swap.c libft/get_next_line.c libft/ft_memdel_arr.c fractol.h init.c render.c keyhook.c julia.c burningship.c tricorn.c)

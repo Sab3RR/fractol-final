@@ -5,8 +5,8 @@
 # include <fcntl.h>
 # include <math.h>
 # include <pthread.h>
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 420
+# define HEIGHT 420
 
 # define KEYPRESSED 2
 # define KEYRELEASED 3
@@ -14,6 +14,22 @@
 # define MOSUERELEASED 5
 # define MOUSEMOVED 6
 # define REDBUTTONPRESSED 17
+
+# define ESC 53
+# define PLUS 69
+# define MINUS 78
+# define LEFT 123
+# define RIGTH 124
+# define DOWN 125
+# define UP 126
+# define RESETSPACE 49
+# define LEFTMOUSE 1
+# define RIGHTMOUSE 2
+# define WHEELUP 4
+# define WHEELDOWN 5
+# define POWUP 116
+# define POWDOWN 121
+# define F 3
 
 # define P_THREADS 4
 
@@ -48,6 +64,7 @@
 # define IS_FREE VAR->map[X + Y * WIDTH]
 # define TID var->tid
 # define DEBUG var->debug
+# define FREEZEJULIA var->f_julia
 
 # define MANDELBROT 0
 # define JULIA 1
@@ -94,28 +111,27 @@ typedef struct			s_var
 	long double 		i;
 	char 				*map;
 	int 				*filter;
+	char 				f_julia;
 	char				loopf;
 	char 				br;
 	char 				*reason;
 	char 				debug;
 	char 				core_tid[P_THREADS];
-	pthread_rwlock_t	lock_rw[1];
-	pthread_rwlock_t	render[1];
-	pthread_rwlock_t	core[1];
+	pthread_rwlock_t	*lock_map;
 	pthread_attr_t		attr[1];
 	pthread_t			tid[P_THREADS];
-	pthread_t 			render_tid[1];
-	pthread_t 			debug_tid[1];
 	t_die				die;
-	struct s_var		*st_var[P_THREADS];
 	struct s_var		*var;
 
 }						t_var;
 
+int 					keypressed(int key, void *param);
+void					tricorn_fract(t_var var);
+void					burningship_fract(t_var var);
+void					julia_fract(t_var var);
+void					put_pixel(t_var *var, int y, int x, int color);
+int						julia_mouse(int x, int y, void *param);
 void					fractalgo(t_var *var, char *av);
-void					*render(void *param);
-void					*debug_funct(t_var *var);
-void					end_pthread(t_var *var);
+void					render(t_var *var);
 int 					mousepressed(int button, int x, int y, void *param);
-int 					loop_hook(void *param);
 #endif

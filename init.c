@@ -22,8 +22,7 @@ void	die(t_var *var)
 void	warning(t_var *var)
 {
 	REASON = "Usage:\n"
-			 "./fractol mandelbrot|julia|burningship...\n"
-			 "            ...tricorn|multibrot|livebrot\n"
+			 "./fractol mandelbrot|julia|burningship|tricorn\n"
 			 "For multiple windows - type 2! fractal names:\n"
 			 "' ./fractol tricorn julia '  - for example\n"
 			 "Second window will be under the first one\n";
@@ -40,10 +39,6 @@ void	valid(t_var *var, char *av)
 		FRACTAL = BURNINGHSIP;
 	else if (ft_strcmp(av, "tricorn") == 0)
 		FRACTAL = TRICORN;
-	else if (ft_strcmp(av, "multibrot") == 0)
-		FRACTAL = MULTIBROT;
-	else if (ft_strcmp(av, "livebrot") == 0)
-		FRACTAL = LIVEBROT;
 	else
 	{
 		warning(var);
@@ -55,22 +50,28 @@ void	ft_init(t_var *var)
 	int i;
 
 	i = -1;
-	if (FRACTAL == MANDELBROT)
+//	if (FRACTAL == MANDELBROT || FRACTAL == BURNINGHSIP || FRACTAL == TRICORN)
+//	{
+//		INIT5(ZOOM, 255, R, -3.84, I, -2.16, COLOR, 1, VAR, var);
+
+//	}
+	if (FRACTAL == JULIA)
 	{
-		INIT5(ZOOM, 255, R, -3.84, I, -2.16, COLOR, 1, VAR, var);
-		ITERATIONS = 500;
-		while (++i < P_THREADS)
-			var->st_var[i] = (t_var*)ft_memalloc(sizeof(t_var));
+		INIT5(ZOOM, 1, R, -4.5, I, -2.5, COLOR, 1, VAR, var);
+		B = 0.285;
+		A = 0.1;
 	}
-	COLOR = 1;
-	DEBUG = 1;
+	INIT5(ZOOM, 80, R, -2.5, I, -2.5, COLOR, 1, VAR, var);
+	ITERATIONS = 20;
+	COLOR = 4901;
 	var->map = (char*)ft_memalloc(WIDTH * HEIGHT);
-	pthread_rwlock_wrlock(var->render);
-	pthread_create(var->render_tid, NULL, render, var);
+	render(var);
 }
 
 void	fractalgo(t_var *var, char *av)
 {
+	int	i;
+
 	valid(var, av);
 	MLX_PTR = mlx_init();
 	WIN_PTR = mlx_new_window(MLX_PTR, WIDTH, HEIGHT, "fractol 42");
@@ -80,15 +81,15 @@ void	fractalgo(t_var *var, char *av)
 	BPP = 32;
 	DEBUG = 1;
 	IMG_ADDR = mlx_get_data_addr(IMG_PTR, &BPP, &SIZE_LINE, &ENDIAN);
-	pthread_attr_init(var->attr);
-//	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-	pthread_rwlock_init(var->lock_rw, NULL);
-	pthread_rwlock_init(var->render, NULL);
-//	pthread_mutex_init(var->mutex_tid, NULL);
+	var->lock_map = (pthread_rwlock_t*)malloc(sizeof(pthread_rwlock_t) * WIDTH * HEIGHT);
+	i = -1;
+	while (++i < WIDTH * HEIGHT)
+		pthread_rwlock_init(&var->lock_map[i], NULL);
 	ft_init(var);
-	mlx_loop_hook(var->mlx_ptr, loop_hook, (void*)var);
+//	mlx_loop_hook(var->mlx_ptr, loop_hook, (void*)var);
+	mlx_hook(WIN_PTR, 6, 1L < 17, julia_mouse, var);
 	mlx_hook(WIN_PTR, MOUSEPRESSED, (1L << 17), mousepressed, var);
-//	mlx_hook(WIN_PTR, KEYPRESSED, (1L << 17), keypressed, var);
+	mlx_hook(WIN_PTR, KEYPRESSED, (1L << 17), keypressed, var);
 	mlx_loop(MLX_PTR);
 }
 

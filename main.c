@@ -9,7 +9,7 @@ int			main(int ac, char **av)
 	if (!(var = (t_var *)ft_memalloc(sizeof(t_var))))
 		return (-1);
 	if (ac == 2)
-		fractalgo(var, "mandelbrot");
+		fractalgo(var, "julia");
 //	else if (ac == 3)
 //		twofractalsgo(var, av);
 //	else

@@ -1,16 +1,6 @@
 #include "fractol.h"
 
-void	put_pixel(t_var *var, int y, int x, int color)
-{
-	if (x < WIDTH && y < WIDTH)
-	{
-		color = mlx_get_color_value(MLX_PTR, color);
-		ft_memcpy(IMG_ADDR + 4 * WIDTH * y + x * 4,
-				  &color, sizeof(int));
-	}
-}
-
-void	m_calc(t_var *var)
+void	b_calc(t_var *var)
 {
 	B = X / ZOOM + R;
 	Z_I = A;
@@ -19,7 +9,7 @@ void	m_calc(t_var *var)
 	while (IF_FULL && SQRT)
 	{
 		Z_R_TMP = Z_R * Z_R - Z_I * Z_I + B;
-		Z_I_TMP = 2 * Z_R * Z_I + A;
+		Z_I_TMP = fabsl(2 * Z_R * Z_I) + A;
 		Z_R = Z_R_TMP;
 		Z_I = Z_I_TMP;
 		ITERATOR++;
@@ -31,7 +21,7 @@ void	m_calc(t_var *var)
 }
 
 
-void	*mandelbrot(void *param)
+void	*burningship(void *param)
 {
 	t_var *var;
 
@@ -50,7 +40,7 @@ void	*mandelbrot(void *param)
 			}
 			else
 				VAR->map[X + Y * WIDTH] = 1;
-			m_calc(var);
+			b_calc(var);
 			X++;
 		}
 		Y++;
@@ -58,7 +48,7 @@ void	*mandelbrot(void *param)
 	return (0);
 }
 
-void	mandelbrot_fract(t_var var)
+void	burningship_fract(t_var var)
 {
 	int i = 0;
 	t_var	var1[P_THREADS];
@@ -70,7 +60,7 @@ void	mandelbrot_fract(t_var var)
 	{
 
 		var1[i] = var;
-		pthread_create(&var.TID[i], NULL, mandelbrot, &var1[i]);
+		pthread_create(&var.TID[i], NULL, burningship, &var1[i]);
 		i++;
 	}
 	i = 0;
@@ -78,19 +68,6 @@ void	mandelbrot_fract(t_var var)
 	{
 		pthread_join(var.TID[i++], NULL);
 	}
-}
 
-void	render(t_var *var)
-{
-	ft_bzero(IMG_ADDR, (size_t)(WIDTH * HEIGHT * BPP / 8));
-	if (FRACTAL == MANDELBROT)
-		mandelbrot_fract(*var);
-	else if (FRACTAL == JULIA)
-		julia_fract(*var);
-	else if (FRACTAL == BURNINGHSIP)
-		burningship_fract(*var);
-	else if (FRACTAL == TRICORN)
-		tricorn_fract(*var);
-	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
