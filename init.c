@@ -1,7 +1,10 @@
 #include "fractol.h"
 
-void	die(t_var *var)
+void	die(void *param)
 {
+	t_var *var;
+
+	var = (t_var *)param;
 	if (DIE.win_ptr && DIE.img_ptr)
 	{
 		mlx_destroy_image(MLX_PTR, IMG_PTR);
@@ -63,7 +66,7 @@ void	ft_init(t_var *var)
 	}
 	INIT5(ZOOM, 80, R, -2.5, I, -2.5, COLOR, 1, VAR, var);
 	ITERATIONS = 20;
-	COLOR = 4901;
+	COLOR = 1000;
 	var->map = (char*)ft_memalloc(WIDTH * HEIGHT);
 	render(var);
 }
@@ -90,6 +93,7 @@ void	fractalgo(t_var *var, char *av)
 	mlx_hook(WIN_PTR, 6, 1L < 17, julia_mouse, var);
 	mlx_hook(WIN_PTR, MOUSEPRESSED, (1L << 17), mousepressed, var);
 	mlx_hook(WIN_PTR, KEYPRESSED, (1L << 17), keypressed, var);
+	mlx_hook(WIN_PTR, REDBUTTONPRESSED, (1L << 17), die, var);
 	mlx_loop(MLX_PTR);
 }
 

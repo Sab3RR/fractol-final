@@ -30,6 +30,8 @@
 # define POWUP 116
 # define POWDOWN 121
 # define F 3
+# define SCL 33
+# define SCR 30
 
 # define P_THREADS 4
 

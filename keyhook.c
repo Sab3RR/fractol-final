@@ -9,6 +9,12 @@ int keypressed(int key, void *param)
 	key == RIGTH ? R -= 30 / ZOOM : 0;
 	key == DOWN ? I -= 30 / ZOOM : 0;
 	key == UP ? I += 30 / ZOOM : 0;
+	if (key == F)
+		FREEZEJULIA = !FREEZEJULIA;
+	else if (key == SCR)
+		COLOR += 12300;
+	else if (key == SCL)
+		COLOR -= 12300;
 	render(var);
 }
 
@@ -34,7 +40,6 @@ int mousepressed(int button, int x, int y, void *param)
 		ZOOM /= 1.2;
 		render(var);
 	}
-	else if (button == F)
-		FREEZEJULIA = !FREEZEJULIA;
+
 
 }
