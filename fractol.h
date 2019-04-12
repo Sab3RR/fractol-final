@@ -27,8 +27,6 @@
 # define RIGHTMOUSE 2
 # define WHEELUP 4
 # define WHEELDOWN 5
-# define POWUP 116
-# define POWDOWN 121
 # define F 3
 # define SCL 33
 # define SCR 30
@@ -115,18 +113,22 @@ typedef struct			s_var
 	int 				*filter;
 	char 				f_julia;
 	char				loopf;
-	char 				br;
+	char 				fract_name;
 	char 				*reason;
-	char 				debug;
-	char 				core_tid[P_THREADS];
+	char 				debug;;
 	pthread_rwlock_t	*lock_map;
 	pthread_attr_t		attr[1];
 	pthread_t			tid[P_THREADS];
+	pthread_t 			fractal_tids[2];
 	t_die				die;
 	struct s_var		*var;
 
 }						t_var;
 
+void					warning(t_var *var);
+void					twofractalsgo(t_var *var, char **av);
+void					valid(t_var *var, char *av);
+int						die(void *param);
 int 					keypressed(int key, void *param);
 void					tricorn_fract(t_var var);
 void					burningship_fract(t_var var);

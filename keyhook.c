@@ -9,18 +9,20 @@ int keypressed(int key, void *param)
 	key == RIGTH ? R -= 30 / ZOOM : 0;
 	key == DOWN ? I -= 30 / ZOOM : 0;
 	key == UP ? I += 30 / ZOOM : 0;
-	if (key == F)
-		FREEZEJULIA = !FREEZEJULIA;
-	else if (key == SCR)
-		COLOR += 12300;
-	else if (key == SCL)
-		COLOR -= 12300;
+	key == F ? FREEZEJULIA = !FREEZEJULIA : 0;
+	key == SCR ? COLOR += 12300 : 0;
+	key == SCL ? COLOR -= 12300 : 0;
+	if (key == RESETSPACE)
+	{
+		INIT4(ZOOM, 80, R, -2.5, I, -2.5, COLOR, 1);
+	}
+	key == ESC ? die(var) : 0;
 	render(var);
+	return (0);
 }
 
 int mousepressed(int button, int x, int y, void *param)
 {
-	int i;
 	t_var *var;
 
 	var = (t_var *)param;
@@ -40,6 +42,5 @@ int mousepressed(int button, int x, int y, void *param)
 		ZOOM /= 1.2;
 		render(var);
 	}
-
-
+	return (0);
 }

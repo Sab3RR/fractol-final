@@ -11,6 +11,7 @@ int		julia_mouse(int x, int y, void *param)
 		A = y * 2 - 800;
 		render(var);
 	}
+	return (0);
 }
 
 void	j_calc(t_var *var)

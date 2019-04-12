@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-void	die(void *param)
+int		die(void *param)
 {
 	t_var *var;
 
@@ -50,9 +50,6 @@ void	valid(t_var *var, char *av)
 
 void	ft_init(t_var *var)
 {
-	int i;
-
-	i = -1;
 //	if (FRACTAL == MANDELBROT || FRACTAL == BURNINGHSIP || FRACTAL == TRICORN)
 //	{
 //		INIT5(ZOOM, 255, R, -3.84, I, -2.16, COLOR, 1, VAR, var);
